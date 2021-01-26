@@ -1,8 +1,13 @@
 // Copyright 2020 <Christian Maniewski>
 
+#include <eeprom_emul.h>
 #include <stm32l4xx_hal.h>
 #include <string.h>
+
+#include <cstdio>
+
 #include "./uart_debug.h"
+#include "eeprom.h"
 
 void SystemClock_Config(void) {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
@@ -51,7 +56,17 @@ int main() {
 
   HUART2_Init();
 
-  char msg[20] = "Hello otter!";
+  EEPROM.Init();
+
+  EEPROM.WriteFloat(3, 0.854321F);
+
+  float eepromValue = EEPROM.ReadFloat(3);
+
+  EEPROM.DeInit();
+
+  char msg[24];
+
+  sprintf(msg, "storedValue: %.6f\r\n", eepromValue);
 
   while (true) {
     HAL_UART_Transmit(&huart2, reinterpret_cast<uint8_t*>(msg), strlen(msg),

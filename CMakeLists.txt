@@ -16,6 +16,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 find_program(OPENOCD openocd)
 
 set(VENDOR_FILES
+  vendor/eeprom_emul/Src/eeprom_emul.c
+  vendor/eeprom_emul/Src/flash_interface.c
   # Feel free to uncomment files that you don't need
   vendor/stm32l4xx_hal_driver/Src/stm32l4xx_ll_usb.c
   vendor/stm32l4xx_hal_driver/Src/stm32l4xx_hal_i2c.c
@@ -47,6 +49,7 @@ set(VENDOR_FILES
 
 set(PROJECT_FILES
   src/main.cpp
+  src/eeprom.cpp
   src/stm32l4xx_it.cpp # Interrupt handlers
   src/system_stm32l4xx.c # System settings
 
@@ -66,6 +69,7 @@ target_include_directories(${EXECUTABLE} SYSTEM PRIVATE
   vendor/stm32l4xx_hal_driver/Inc
   vendor/cmsis_device_l4/Include
   vendor/cmsis_core/Include
+  vendor/eeprom_emul/Include
   )
 
 target_include_directories(${EXECUTABLE} PRIVATE
